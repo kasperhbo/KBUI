@@ -25,10 +25,6 @@ option(GLFW_DOCUMENT_INTERNALS "Include internals in documentation" OFF)
 add_subdirectory(${GLFW_DIR} binary_dir EXCLUDE_FROM_ALL)
 include_directories(${GLFW_DIR}/include)
 
-# Dear ImGui
-set(IMGUI_DIR vendor/imgui)
-include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends src/include)
-
 # Libraries
 find_package(Vulkan REQUIRED)
 set(LIBRARIES "glfw;Vulkan::Vulkan")
@@ -53,6 +49,8 @@ set(PUBLIC_HEADERS
         src/public/headers/MainWindow.h
 )
 
+# Dear ImGui
+set(IMGUI_DIR vendor/imgui)
 add_library(
         ${PROJECT_NAME}
         STATIC
@@ -70,11 +68,23 @@ add_library(
 )
 
 target_include_directories(${PROJECT_NAME}
-        PUBLIC src/public/headers)
+        PUBLIC
+        src/public/headers)
+
 target_link_libraries(${PROJECT_NAME}
         ${LIBRARIES})
+
 target_compile_definitions(${PROJECT_NAME}
-        PUBLIC -DImTextureID=ImU64)
+        PUBLIC
+        -DImTextureID=ImU64)
+
+target_include_directories(
+        ${PROJECT_NAME}
+        PUBLIC
+        ${IMGUI_DIR}
+        ${IMGUI_DIR}/backends
+        src/include)
+
 
 set(EXE_NAME ${PROJECT_NAME}-EXE)
 add_executable(${EXE_NAME}
