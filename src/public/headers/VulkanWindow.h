@@ -34,6 +34,9 @@ namespace KBUI {
 
         void Close();
 
+        static VulkanWindow& GetCurrentRenderingWindow(){
+            return *s_CurrentRenderingWindow;
+        }
     private:
         static bool InitializeGLFW();
 
@@ -381,6 +384,8 @@ namespace KBUI {
         bool m_showDemoWindow = true;
         bool m_showAnotherWindow = false;
         WindowProperties m_WindowProperties;
+
+        inline static VulkanWindow* s_CurrentRenderingWindow = nullptr;
     };
 
 } // KBUI

@@ -11,7 +11,7 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "" FORCE)
 endif ()
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DVK_PROTOTYPES")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVK_PROTOTYPES")
 
@@ -37,7 +37,6 @@ set(LIBRARIES "glfw;Vulkan::Vulkan")
 include_directories(${GLFW_DIR}/deps)
 
 set(SOURCE_LIST
-    src/private/source/main.cpp
         src/private/source/VulkanWindow.cpp
 )
 
@@ -48,9 +47,15 @@ set(PUBLIC_HEADERS
         src/public/headers/VulkanWindow.h
         src/public/headers/Properties/WindowProperties.h
         src/public/headers/ImVecMath.h
+        src/public/headers/WindowWithoutBorders.cpp
+        src/public/headers/WindowWithoutBorders.h
+        src/public/headers/MainWindow.cpp
+        src/public/headers/MainWindow.h
 )
 
-add_executable(${PROJECT_NAME}
+add_library(
+        ${PROJECT_NAME}
+        STATIC
         ${sources}
         ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
         ${IMGUI_DIR}/backends/imgui_impl_vulkan.cpp
@@ -66,6 +71,17 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
         PUBLIC src/public/headers)
+target_link_libraries(${PROJECT_NAME}
+        ${LIBRARIES})
+target_compile_definitions(${PROJECT_NAME}
+        PUBLIC -DImTextureID=ImU64)
 
-target_link_libraries(${PROJECT_NAME} ${LIBRARIES})
-target_compile_definitions(${PROJECT_NAME} PUBLIC -DImTextureID=ImU64)
+set(EXE_NAME ${PROJECT_NAME}-EXE)
+add_executable(${EXE_NAME}
+    src/main.cpp
+)
+
+target_link_libraries(
+        ${EXE_NAME}
+        ${PROJECT_NAME}
+)

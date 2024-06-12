@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <utility>
+#include "WindowWithoutBorders.h"
+#include "MainWindow.h"
 
 namespace KBUI {
     VulkanWindow::VulkanWindow(WindowProperties windowProperties) :
@@ -52,6 +54,7 @@ namespace KBUI {
     }
 
     void VulkanWindow::StartFrame() {
+        s_CurrentRenderingWindow = this;
         glfwPollEvents();
 
         int fb_width, fb_height;
@@ -69,23 +72,31 @@ namespace KBUI {
         ImGui_ImplVulkan_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        MainWindow::Begin(KBUI_WindowFlags_None);
     }
 
     void VulkanWindow::EndFrame() {
-        ImGui::Render();
-        ImDrawData *draw_data = ImGui::GetDrawData();
+        MainWindow::End();
 
-        if (!IsMinimized()) {
-            m_MainWindowData.ClearValue.color.float32[0] =
-                    (m_WindowProperties.getClearColor().x) * (m_WindowProperties.getClearColor().w);
-            m_MainWindowData.ClearValue.color.float32[1] =
-                    (m_WindowProperties.getClearColor().y) * (m_WindowProperties.getClearColor().w);
-            m_MainWindowData.ClearValue.color.float32[2] =
-                    (m_WindowProperties.getClearColor().z) * (m_WindowProperties.getClearColor().w);
-            m_MainWindowData.ClearValue.color.float32[3] = m_WindowProperties.getClearColor().w;
-            FrameRender(&m_MainWindowData, draw_data);
-            FramePresent(&m_MainWindowData);
+        ImGuiIO &io = ImGui::GetIO();
+
+        ImGui::Render();
+        ImDrawData* main_draw_data = ImGui::GetDrawData();
+        m_MainWindowData.ClearValue.color.float32[0] = m_WindowProperties.getClearColor().x * m_WindowProperties.getClearColor().w;
+        m_MainWindowData.ClearValue.color.float32[1] = m_WindowProperties.getClearColor().y * m_WindowProperties.getClearColor().w;
+        m_MainWindowData.ClearValue.color.float32[2] = m_WindowProperties.getClearColor().z * m_WindowProperties.getClearColor().w;
+        m_MainWindowData.ClearValue.color.float32[3] = m_WindowProperties.getClearColor().w;
+        if (!IsMinimized())
+            FrameRender(&m_MainWindowData, main_draw_data);
+
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
         }
+
+        if (!IsMinimized())
+            FramePresent(&m_MainWindowData);
     }
 
     bool VulkanWindow::InitializeGLFW() {
@@ -128,8 +139,18 @@ namespace KBUI {
         (void) io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
         ImGui::StyleColorsDark();
+        ImGuiStyle& style = ImGui::GetStyle();
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            style.WindowRounding = 0.0f;
+            style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+        }
+
+
         ImGui_ImplGlfw_InitForVulkan(m_window, true);
 
         ImGui_ImplVulkan_InitInfo init_info = {};
