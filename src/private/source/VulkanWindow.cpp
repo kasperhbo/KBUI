@@ -2,11 +2,10 @@
 
 #include <iostream>
 #include <utility>
-#include "WindowWithoutBorders.h"
 #include "MainWindow.h"
 
 namespace KBUI {
-    VulkanWindow::VulkanWindow(WindowProperties windowProperties) :
+    VulkanWindow::VulkanWindow(Properties::WindowProperties windowProperties) :
             m_WindowProperties(std::move(windowProperties)),
             m_Allocator(nullptr),
             m_SwapChainRebuild(false),
@@ -81,16 +80,18 @@ namespace KBUI {
         ImGuiIO &io = ImGui::GetIO();
 
         ImGui::Render();
-        ImDrawData* main_draw_data = ImGui::GetDrawData();
-        m_MainWindowData.ClearValue.color.float32[0] = m_WindowProperties.getClearColor().x * m_WindowProperties.getClearColor().w;
-        m_MainWindowData.ClearValue.color.float32[1] = m_WindowProperties.getClearColor().y * m_WindowProperties.getClearColor().w;
-        m_MainWindowData.ClearValue.color.float32[2] = m_WindowProperties.getClearColor().z * m_WindowProperties.getClearColor().w;
+        ImDrawData *main_draw_data = ImGui::GetDrawData();
+        m_MainWindowData.ClearValue.color.float32[0] =
+                m_WindowProperties.getClearColor().x * m_WindowProperties.getClearColor().w;
+        m_MainWindowData.ClearValue.color.float32[1] =
+                m_WindowProperties.getClearColor().y * m_WindowProperties.getClearColor().w;
+        m_MainWindowData.ClearValue.color.float32[2] =
+                m_WindowProperties.getClearColor().z * m_WindowProperties.getClearColor().w;
         m_MainWindowData.ClearValue.color.float32[3] = m_WindowProperties.getClearColor().w;
         if (!IsMinimized())
             FrameRender(&m_MainWindowData, main_draw_data);
 
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
         }
@@ -143,9 +144,8 @@ namespace KBUI {
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
         ImGui::StyleColorsDark();
-        ImGuiStyle& style = ImGui::GetStyle();
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
+        ImGuiStyle &style = ImGui::GetStyle();
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
             style.WindowRounding = 0.0f;
             style.Colors[ImGuiCol_WindowBg].w = 1.0f;
         }
@@ -218,11 +218,11 @@ namespace KBUI {
         glfwSetWindowShouldClose(m_window, true);
     }
 
-    bool VulkanWindow::IsMinimized(){
+    bool VulkanWindow::IsMinimized() {
         return glfwGetWindowAttrib(m_window, GLFW_ICONIFIED) != 0;
     }
 
-    bool VulkanWindow::IsMaximized(){
+    bool VulkanWindow::IsMaximized() {
         return glfwGetWindowAttrib(m_window, GLFW_MAXIMIZED) != 0;
     }
 }

@@ -93,9 +93,6 @@ namespace KBUI {
 
 
     void WindowWithoutBorders::Begin(const std::string& id) {
-        // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
-        // because it would be confusing to have two docking targets within each others.
-
         ImGuiViewport *viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(viewport->Pos);
         ImGui::SetNextWindowSize(viewport->Size);
@@ -121,25 +118,9 @@ namespace KBUI {
         {
             ImGui::PushStyleColor(ImGuiCol_Border, IM_COL32(50, 50, 50, 255));
             // Draw window border if the window is not maximized
-            if (!isMaximized)
-                renderWindowOuterBorders(ImGui::GetCurrentWindow());
+            if (!isMaximized) renderWindowOuterBorders(ImGui::GetCurrentWindow());
 
             ImGui::PopStyleColor();
-        }
-
-        if (true) {
-            float titleBarHeight = 32;
-            ImGui::SetCursorPosY(titleBarHeight);
-        }
-
-        {
-            // Dockspace
-            ImGuiIO &io = ImGui::GetIO();
-            ImGuiStyle &style = ImGui::GetStyle();
-            float minWinSizeX = style.WindowMinSize.x;
-            style.WindowMinSize.x = 370.0f;
-            ImGui::DockSpace(ImGui::GetID("MyDockspace"));
-            style.WindowMinSize.x = minWinSizeX;
         }
     }
 

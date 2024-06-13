@@ -13,7 +13,16 @@ namespace KBUI {
         return std::string("MainWindow-" + index);
     }
     void MainWindow::Begin(KBUI_WindowFlags flags) {
-        WindowWithoutBorders::Begin(GetUID());
+        std::string UID = GetUID();
+        WindowWithoutBorders::Begin(UID);
+
+        // Dockspace
+        ImGuiIO &io = ImGui::GetIO();
+        ImGuiStyle &style = ImGui::GetStyle();
+        float minWinSizeX = style.WindowMinSize.x;
+        style.WindowMinSize.x = 370.0f;
+        ImGui::DockSpace(ImGui::GetID(std::string(UID + "MyDockspace").c_str()));
+        style.WindowMinSize.x = minWinSizeX;
     }
 
     void MainWindow::End() {

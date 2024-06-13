@@ -34,19 +34,17 @@ include_directories(${GLFW_DIR}/deps)
 
 set(SOURCE_LIST
         src/private/source/VulkanWindow.cpp
+        src/private/source/MainWindow.cpp
+        src/private/source/Fonts/FontManager.cpp
+        src/private/source/Fonts/Font.cpp
+        src/private/source/WindowWithoutBorders.cpp
+        src/private/source/Windows/Window.cpp
 )
 
 set(PRIVATE_HEADERS
 )
 
 set(PUBLIC_HEADERS
-        src/public/headers/VulkanWindow.h
-        src/public/headers/Properties/WindowProperties.h
-        src/public/headers/ImVecMath.h
-        src/public/headers/WindowWithoutBorders.cpp
-        src/public/headers/WindowWithoutBorders.h
-        src/public/headers/MainWindow.cpp
-        src/public/headers/MainWindow.h
 )
 
 # Dear ImGui
@@ -77,7 +75,11 @@ target_link_libraries(${PROJECT_NAME}
 target_compile_definitions(${PROJECT_NAME}
         PUBLIC
         -DImTextureID=ImU64)
-
+target_include_directories(
+        ${PROJECT_NAME}
+        PRIVATE
+        src/private/headers
+)
 target_include_directories(
         ${PROJECT_NAME}
         PUBLIC

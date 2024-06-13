@@ -18,7 +18,7 @@ namespace KBUI {
 
     class VulkanWindow {
     public:
-        explicit VulkanWindow(WindowProperties  windowProperties);
+        explicit VulkanWindow(KBUI::Properties::WindowProperties  windowProperties);
 
         ~VulkanWindow();
 
@@ -37,6 +37,21 @@ namespace KBUI {
         static VulkanWindow& GetCurrentRenderingWindow(){
             return *s_CurrentRenderingWindow;
         }
+
+        static ImVec2 GetWindowScaleFactor(){
+            float xScale, y_scale;
+            if(s_CurrentRenderingWindow == nullptr)
+                return {1.0f, 1.0f};
+
+            glfwGetWindowContentScale(s_CurrentRenderingWindow->m_window, &xScale, &y_scale);
+            return {xScale, y_scale};
+        }
+
+//        ImVec2 getWindowScaleFactor() {
+//            float xScale, y_scale;
+//            glfwGetWindowContentScale((GLFWwindow *) g_ImVKData->window, &xScale, &y_scale);
+//            return ImVec2(xScale, y_scale);
+//        }
     private:
         static bool InitializeGLFW();
 
@@ -383,7 +398,7 @@ namespace KBUI {
 
         bool m_showDemoWindow = true;
         bool m_showAnotherWindow = false;
-        WindowProperties m_WindowProperties;
+        KBUI::Properties::WindowProperties m_WindowProperties;
 
         inline static VulkanWindow* s_CurrentRenderingWindow = nullptr;
     };

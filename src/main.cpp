@@ -6,7 +6,12 @@
 #include <imgui.h>
 
 int main() {
-    WindowProperties properties =  WindowProperties(1920, 1080, "Hello, Vulkan!", ImVec4(0.45f, 0.55f, 0.60f, 1.00f));
+    KBUI::Properties::WindowProperties properties = {1920, 1080, "Hello, Vulkan!", ImVec4(0.45f, 0.55f, 0.60f, 1.00f)};
     KBUI::VulkanWindow mainWindow(properties);
+    while (!mainWindow.ShouldClose()) {
+        mainWindow.StartFrame();
+        ImGui::ShowDemoWindow();
+        mainWindow.EndFrame();
+    }
     return 0;
 }
