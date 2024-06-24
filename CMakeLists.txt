@@ -25,9 +25,12 @@ option(GLFW_DOCUMENT_INTERNALS "Include internals in documentation" OFF)
 add_subdirectory(${GLFW_DIR} binary_dir EXCLUDE_FROM_ALL)
 include_directories(${GLFW_DIR}/include)
 
+#spdlog
+add_subdirectory(vendor/spdlog)
+
 # Libraries
 find_package(Vulkan REQUIRED)
-set(LIBRARIES "glfw;Vulkan::Vulkan")
+set(LIBRARIES "glfw;Vulkan::Vulkan;spdlog")
 
 # Use vulkan headers from glfw:
 include_directories(${GLFW_DIR}/deps)
@@ -39,6 +42,7 @@ set(SOURCE_LIST
         src/private/source/Fonts/Font.cpp
         src/private/source/WindowWithoutBorders.cpp
         src/private/source/Windows/Window.cpp
+        src/private/source/Windows/Terminal/TerminalWindow.cpp
 )
 
 set(PRIVATE_HEADERS

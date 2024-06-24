@@ -3,18 +3,23 @@
 //
 
 #include <VulkanWindow.h>
+#include <Windows/Terminal/TerminalWindow.h>
 #include <imgui.h>
 #include <Fonts/FontManager.h>
-
+using namespace KBUI;
 int main() {
     KBUI::Properties::WindowProperties properties = {1920, 1080, "Hello, Vulkan!", ImVec4(0.45f, 0.55f, 0.60f, 1.00f)};
-    KBUI::VulkanWindow mainWindow(properties);
+    KBUI::VulkanWindow vulkanWindow(properties);
     KBUI::Fonts::FontManager::LoadDefaultFont();
+    static Windows::TerminalWindow terminalWindow("/Users/brk");
 
-    while (!mainWindow.ShouldClose()) {
-        mainWindow.StartFrame();
-        ImGui::ShowDemoWindow();
-        mainWindow.EndFrame();
+    while (!vulkanWindow.ShouldClose()) {
+        vulkanWindow.StartFrame();
+
+        terminalWindow.Begin("Terminal");
+        Windows::TerminalWindow::End();
+
+        vulkanWindow.EndFrame();
     }
     return 0;
 }

@@ -15,12 +15,12 @@ namespace KBUI::Windows {
         Window() = default;
 
         virtual ~Window() = default;
-
-        static void Begin(const std::string &id);
-
-        static void End();
-
-        static Window* Create(const std::string &id);
+//
+//        static void Begin(const std::string &id);
+//
+//        static void End();
+//
+//        static Window* Create(const std::string &id);
     };
 
 } // Windows

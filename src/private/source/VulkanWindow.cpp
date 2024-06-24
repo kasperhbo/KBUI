@@ -172,42 +172,6 @@ namespace KBUI {
     }
 
     void VulkanWindow::MainLoop() {
-//        while (!ShouldClose()) {
-//            StartFrame();
-//
-//            //example loop
-//            {
-//                if (m_showDemoWindow) {
-//                    ImGui::ShowDemoWindow(&m_showDemoWindow);
-//                    static float f = 0.0f;
-//                    static int counter = 0;
-//
-//                    ImGui::Begin("Hello, world!");
-//                    ImGui::Text("This is some useful text.");
-//                    ImGui::Checkbox("Demo Window", &m_showDemoWindow);
-//                    ImGui::Checkbox("Another Window", &m_showAnotherWindow);
-//                    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-//                    ImGui::ColorEdit3("clear color", (float *) &m_WindowProperties.getClearColorRef());
-//
-//                    if (ImGui::Button("Button"))
-//                        counter++;
-//                    ImGui::SameLine();
-//                    ImGui::Text("counter = %d", counter);
-//
-//                    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-//                                ImGui::GetIO().Framerate);
-//                    ImGui::End();
-//                }
-//
-//                if (m_showAnotherWindow) {
-//                    ImGui::Begin("Another Window", &m_showAnotherWindow);
-//                    ImGui::Text("Hello from another window!");
-//                    if (ImGui::Button("Close Me"))
-//                        m_showAnotherWindow = false;
-//                    ImGui::End();
-//                }
-//            }
-//        }
     }
 
     bool VulkanWindow::ShouldClose() {
