@@ -44,12 +44,14 @@ namespace KBUI::Fonts {
             return baseConfig;
         }
 
-        static Font& LoadFont(const std::string &fontName, const std::filesystem::path &fontPath, const bool setAsDefaultFont);
+        static std::shared_ptr<Font> LoadFont(const std::string &fontName, const std::filesystem::path &fontPath, const bool setAsDefaultFont);
         static void LoadDefaultFont(float fontSize = s_defaultFontSize, float fontScale = s_defaultFontScale);
         static void SetDefaultFont(const std::string& fontName);
         static std::shared_ptr<Font> GetFont(const std::string& fontName);
+        static std::shared_ptr<Font> GetDefaultFont();
     private:
         inline static std::map<std::string, std::shared_ptr<Font>> s_Fonts = {};
+        inline static std::shared_ptr<Font> s_DefaultFont = nullptr;
 #ifdef __APPLE__
         inline static float s_fontSizeIncreaseFactor = 2.0f;
         inline static float s_defaultFontSize = 16.0f;

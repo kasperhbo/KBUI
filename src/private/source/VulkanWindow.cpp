@@ -3,6 +3,7 @@
 #include <iostream>
 #include <utility>
 #include "MainWindow.h"
+#include <Fonts/FontManager.h>
 
 namespace KBUI {
     VulkanWindow::VulkanWindow(Properties::WindowProperties windowProperties) :
@@ -71,6 +72,11 @@ namespace KBUI {
         ImGui_ImplVulkan_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+
+        if (Fonts::FontManager::GetDefaultFont()) {
+            ImGui::PushFont(Fonts::FontManager::GetDefaultFont()->ImGuiFont);
+        }
+
         MainWindow::Begin(KBUI_WindowFlags_None);
     }
 
@@ -79,25 +85,35 @@ namespace KBUI {
 
         ImGuiIO &io = ImGui::GetIO();
 
+        if (KBUI::Fonts::FontManager::GetDefaultFont()) {
+            ImGui::PopFont();
+        }
+
         ImGui::Render();
         ImDrawData *main_draw_data = ImGui::GetDrawData();
         m_MainWindowData.ClearValue.color.float32[0] =
                 m_WindowProperties.getClearColor().x * m_WindowProperties.getClearColor().w;
+
         m_MainWindowData.ClearValue.color.float32[1] =
                 m_WindowProperties.getClearColor().y * m_WindowProperties.getClearColor().w;
+
         m_MainWindowData.ClearValue.color.float32[2] =
                 m_WindowProperties.getClearColor().z * m_WindowProperties.getClearColor().w;
+
         m_MainWindowData.ClearValue.color.float32[3] = m_WindowProperties.getClearColor().w;
-        if (!IsMinimized())
+
+        if (!IsMinimized()) {
             FrameRender(&m_MainWindowData, main_draw_data);
+        }
 
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
         }
 
-        if (!IsMinimized())
+        if (!IsMinimized()) {
             FramePresent(&m_MainWindowData);
+        }
     }
 
     bool VulkanWindow::InitializeGLFW() {

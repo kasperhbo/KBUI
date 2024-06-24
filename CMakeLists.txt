@@ -43,6 +43,7 @@ set(SOURCE_LIST
         src/private/source/WindowWithoutBorders.cpp
         src/private/source/Windows/Window.cpp
         src/private/source/Windows/Terminal/TerminalWindow.cpp
+        src/private/source/Windows/Logs/LogWindow.cpp
 )
 
 set(PRIVATE_HEADERS
