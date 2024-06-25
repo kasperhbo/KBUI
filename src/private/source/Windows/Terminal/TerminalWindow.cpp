@@ -31,8 +31,9 @@ namespace KBUI::Windows {
         for (const auto & m_log : m_logs) {
             ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "%s", m_log.GetTime().c_str());
             ImGui::SameLine();
-            ImGui::TextWrapped("%s", std::string(m_log.getCommand().GetRanBy() + " " + m_log.getLog()).c_str());
+            ImGui::TextWrapped("%s", std::string(m_log.getCommand().GetRanBy() + ": " + m_log.getLog()).c_str());
         }
+
         ImGui::PopStyleVar();
         ImGui::PopStyleColor();
         ImGui::Separator();
@@ -42,9 +43,6 @@ namespace KBUI::Windows {
         ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, {0,0});
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0,0});
 
-//        ImGui::SetCursorPos({0, 0});
-        ImGui::Dummy(ImVec2(0, 10));
-        // Command input
         ImGui::Dummy(ImVec2(10,0));
         ImGui::SameLine();
         const std::string timeStamp = GetTimestamp();
@@ -84,8 +82,8 @@ namespace KBUI::Windows {
         ImGui::SetNextItemAllowOverlap();
         HandleInput();
         ImGui::EndChild();
-
         ImGui::End();
+
     }
 
     std::vector<std::string> TerminalWindow::SplitCommand(const std::string &command) {

@@ -147,8 +147,25 @@ namespace KBUI::Windows {
                 if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Enter))) {
                     ScrollToBottom();
                     ExecuteCommand(m_input);
+                    m_commandHistory.push_back(m_input);
+                    m_commandHistoryIndex = m_commandHistory.size();
                     m_input = "";
                 }
+
+                if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_UpArrow))) {
+                    if(m_commandHistory.empty()) return;
+                    if(m_commandHistoryIndex == 0) return;
+                    m_input = m_commandHistory[m_commandHistoryIndex - 1];
+                    m_commandHistoryIndex--;
+                }
+
+                if(ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_DownArrow))) {
+                    if(m_commandHistory.empty()) return;
+                    if(m_commandHistoryIndex == m_commandHistory.size() - 1) m_input = "";
+                    m_input = m_commandHistory[m_commandHistoryIndex + 1];
+                    m_commandHistoryIndex++;
+                }
+
 
                 //todo: implement up for history etc.
             }
@@ -172,6 +189,10 @@ namespace KBUI::Windows {
         std::mutex m_logMutex;
         std::vector<TerminalLog> m_logs;
         std::string m_input;
+
+        std::vector<std::string> m_commandHistory = {};
+        int m_commandHistoryIndex = 0;
+
         std::atomic<pid_t> m_currentPid = -1;// using atomic for thread-safety
         std::thread commandThread;
 
