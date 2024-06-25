@@ -36,7 +36,7 @@ namespace KBUI::Properties {
         int m_Width;
         int m_Height;
         std::string m_Title;
-        ImVec4 m_clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+        ImVec4 m_clearColor = ImVec4(0,0,0, 1.00f);
     };
 }
 

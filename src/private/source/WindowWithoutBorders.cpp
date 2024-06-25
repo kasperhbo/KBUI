@@ -92,7 +92,8 @@ namespace KBUI {
     }
 
 
-    void WindowWithoutBorders::Begin(const std::string& id) {
+    //TODO: Refactor this is from an old project
+    void WindowWithoutBorders::Begin(const std::string &id) {
         ImGuiViewport *viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(viewport->Pos);
         ImGui::SetNextWindowSize(viewport->Size);
@@ -101,14 +102,21 @@ namespace KBUI {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f); // Disable window border
 
         const bool isMaximized = VulkanWindow::GetCurrentRenderingWindow().IsMaximized();
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, isMaximized ? ImVec2(-1.0f, -1.0f) : ImVec2(-1.0f, -1.0f)); // Set window padding
+        //todo: fix this and find a nice style for maximized windows and normal windows
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,
+                            isMaximized ? ImVec2(-1.0f, -1.0f) : ImVec2(-1.0f, -1.0f));// Set window padding to -1 to remove the window padding
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f); // Push window border size again for consistency
         ImGui::PushStyleColor(ImGuiCol_MenuBarBg, ImVec4{0.0f, 0.0f, 0.0f, 0.0f}); // Set menu bar background color
 
-        ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
-        window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
-                        ImGuiWindowFlags_NoMove;
-        window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+        ImGuiWindowFlags window_flags =
+                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+                ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus |
+                ImGuiWindowFlags_NoNavFocus |
+                /*ImGuiWindowFlags_NoBackground |*/
+                ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoDecoration |
+                ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing |
+                /*ImGuiWindowFlags_MenuBar |*/ //todo: add this if we choose for a normal menu bar
+                ImGuiWindowFlags_NoMove;
 
         ImGui::Begin(id.c_str(), nullptr, window_flags);
         ImGui::PopStyleColor(); // Restore menu bar background color

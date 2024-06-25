@@ -3,18 +3,24 @@
 //
 
 #include "MainWindow.h"
+#include "Menus/MainMenuBar.h"
 #include <WindowWithoutBorders.h>
 #include <imgui.h>
 #include <imgui_internal.h>
 
 namespace KBUI {
-    static std::string GetUID(){
+    static std::string GetUID() {
         const std::string index = std::to_string(MainWindow::index);
         return std::string("MainWindow-" + index);
     }
+
     void MainWindow::Begin(KBUI_WindowFlags flags) {
         std::string UID = GetUID();
         WindowWithoutBorders::Begin(UID);
+
+        Menus::MainMenuBar::Begin();
+
+        Menus::MainMenuBar::End();
 
         // Dockspace
         ImGuiIO &io = ImGui::GetIO();

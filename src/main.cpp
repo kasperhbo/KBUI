@@ -7,7 +7,7 @@
 #include <imgui.h>
 #include <Fonts/FontManager.h>
 #include <Windows/Logs/LogWindow.h>
-
+#include <Menus/MainMenuBar.h>
 using namespace KBUI;
 int main() {
     KBUI::Properties::WindowProperties properties = {1920, 1080, "Hello, Vulkan!", ImVec4(0.45f, 0.55f, 0.60f, 1.00f)};
@@ -18,6 +18,7 @@ int main() {
 
     while (!vulkanWindow.ShouldClose()) {
         vulkanWindow.StartFrame();
+
         terminalWindow.Begin("Terminal");
         Windows::TerminalWindow::End();
         logWindow.Begin();

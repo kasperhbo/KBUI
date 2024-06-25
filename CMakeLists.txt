@@ -39,11 +39,15 @@ set(SOURCE_LIST
         src/private/source/VulkanWindow.cpp
         src/private/source/MainWindow.cpp
         src/private/source/Fonts/FontManager.cpp
-        src/private/source/Fonts/Font.cpp
         src/private/source/WindowWithoutBorders.cpp
         src/private/source/Windows/Window.cpp
         src/private/source/Windows/Terminal/TerminalWindow.cpp
         src/private/source/Windows/Logs/LogWindow.cpp
+        src/private/source/Menus/MenuItem.cpp
+        src/private/source/Menus/MainMenuBar.cpp
+        src/private/source/Theme/ThemeManager.cpp
+
+
 )
 
 set(PRIVATE_HEADERS

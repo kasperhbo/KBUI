@@ -4,6 +4,8 @@
 #include <utility>
 #include "MainWindow.h"
 #include <Fonts/FontManager.h>
+#include <Menus/MainMenuBar.h>
+#include <Theme/ThemeManager.h>
 
 namespace KBUI {
     VulkanWindow::VulkanWindow(Properties::WindowProperties windowProperties) :
@@ -78,6 +80,7 @@ namespace KBUI {
         }
 
         MainWindow::Begin(KBUI_WindowFlags_None);
+
     }
 
     void VulkanWindow::EndFrame() {
@@ -159,13 +162,6 @@ namespace KBUI {
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-        ImGui::StyleColorsDark();
-        ImGuiStyle &style = ImGui::GetStyle();
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-            style.WindowRounding = 0.0f;
-            style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-        }
-
 
         ImGui_ImplGlfw_InitForVulkan(m_window, true);
 
@@ -185,6 +181,9 @@ namespace KBUI {
         init_info.Allocator = m_Allocator;
         init_info.CheckVkResultFn = check_vk_result;
         ImGui_ImplVulkan_Init(&init_info);
+
+        //initialize theme manager
+        Themes::ThemeManager::Init();
     }
 
     void VulkanWindow::MainLoop() {
