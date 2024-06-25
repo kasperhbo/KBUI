@@ -951,7 +951,10 @@ namespace KBUI::Themes {
 
         style.ChildRounding = 3.0f;
         style.FrameRounding = 3.0f;
-        style.WindowRounding = 0.0f;
+        style.WindowRounding = 3.0f;
+        style.PopupRounding = 3.0f;
+        style.ScrollbarRounding = 3.0f;
+        style.TabRounding = 3.0f;
         style.GrabRounding = 2.0f;
     }
 } // Themes

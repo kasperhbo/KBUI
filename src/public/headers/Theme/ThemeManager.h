@@ -42,10 +42,6 @@ namespace KBUI::Themes {
         static void SetTheme(const Theme &theme);
 
     private:
-        static void SetDarkTheme();
-
-        static void SetLightTheme();
-
         static void PatchTheme();
 
     public:
