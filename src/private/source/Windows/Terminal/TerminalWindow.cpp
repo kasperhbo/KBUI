@@ -34,28 +34,41 @@ namespace KBUI::Windows {
             ImGui::TextWrapped("%s", std::string(m_log.getCommand().GetRanBy() + " " + m_log.getLog()).c_str());
         }
         ImGui::PopStyleVar();
+        ImGui::PopStyleColor();
         ImGui::Separator();
 
 #ifdef __APPLE__
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {0,0});
+        ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, {0,0});
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {0,0});
+
+//        ImGui::SetCursorPos({0, 0});
+        ImGui::Dummy(ImVec2(0, 10));
         // Command input
-        ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "%s",
-                           std::string(GetTimestamp() + " " + pws->pw_name).c_str());
+        ImGui::Dummy(ImVec2(10,0));
+        ImGui::SameLine();
+        const std::string timeStamp = GetTimestamp();
+        ImGui::TextColored(ImVec4(.5f, 1.0f, 1.0f, .5f), "%s ", timeStamp.c_str());
+        ImGui::SameLine();
+        const std::string ranBy = pws->pw_name;
+        ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "%s", std::string(ranBy + ":").c_str());
 #else
         ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "%s", std::string(getTimestamp() + " " + "Ran by not found").c_str());
 #endif
 
         ImGui::SameLine();
         ImGui::TextWrapped("%s", m_input.c_str());
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 1));
+
         if ((int) (ImGui::GetTime() / 0.4) % 2) {
             ImGui::SameLine();
             ImGui::Text("|");
         }
-        ImGui::PopStyleVar();
-        ImGui::PopStyleColor();
+        ImGui::PopStyleVar(3);
+
+
 
         //Create invisible button to focus the window
-        ImGui::SetCursorPos(ImVec2(0, 0));
+        ImGui::SetCursorPos({0, 0});
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
