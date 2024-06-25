@@ -57,7 +57,7 @@ namespace KBUI::Themes {
         }
 
     private:
-        inline static Theme s_CurrentTheme = THEME_MaterialFlat;
+        inline static Theme s_CurrentTheme = THEME_PhotoshopStyle;
         const inline static char *s_ThemeNames[] = {
                 "ImGui Classic",
                 "ImGui Light",

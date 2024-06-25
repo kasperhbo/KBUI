@@ -2,7 +2,7 @@
 // Created by Kasper de bruin on 13/06/2024.
 //
 
-#include "Windows/Window.h"
+#include "Windows/AWindow.h"
 
 
 namespace KBUI::Windows {

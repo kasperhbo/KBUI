@@ -6,14 +6,19 @@
 #include <imgui.h>
 
 #pragma warning(push, 0)
+
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
+
 #pragma warning(pop)
 
 namespace KBUI::Windows {
-    void TerminalWindow::Begin(const std::string &id) {
-        ImGui::Begin(id.c_str(), nullptr);
+    void TerminalWindow::Begin() {
+        ImGui::Begin(AWindow::c_Id.c_str(), nullptr);
         pws = getpwuid(getuid());
+        if (pws == nullptr) {
+            std::cerr << "Failed to get user information" << std::endl;
+        }
         // Set tm background color
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.12f, 0.12f, 0.12f, 1.00f));
 
@@ -23,10 +28,10 @@ namespace KBUI::Windows {
 
 
         //    ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), "Last login: %s", getTimestamp().c_str());
-        for (int i = 0; i < m_logs.size(); i++) {
-            ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "%s", m_logs[i].GetTime().c_str());
+        for (const auto & m_log : m_logs) {
+            ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "%s", m_log.GetTime().c_str());
             ImGui::SameLine();
-            ImGui::TextWrapped("%s", std::string(m_logs[i].getCommand().GetRanBy() + " " + m_logs[i].getLog()).c_str());
+            ImGui::TextWrapped("%s", std::string(m_log.getCommand().GetRanBy() + " " + m_log.getLog()).c_str());
         }
         ImGui::PopStyleVar();
         ImGui::Separator();
@@ -66,9 +71,7 @@ namespace KBUI::Windows {
         ImGui::SetNextItemAllowOverlap();
         HandleInput();
         ImGui::EndChild();
-    }
 
-    void TerminalWindow::End() {
         ImGui::End();
     }
 

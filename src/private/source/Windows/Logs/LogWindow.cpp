@@ -4,24 +4,12 @@
 
 #include "Windows/Logs/LogWindow.h"
 
-namespace KBUI::Windows {
-    std::string GetLineAtIndex() {
-//        // Skip lines until reaching the desired index
-//        for (int currentLine = 0; std::getline(file, line) && currentLine < index; ++currentLine) {
-//            // Just iterating through
-//        }
-//
-//        // Check if the desired line was read successfully
-//        if (file && line.empty() && index > 0) {
-//            // We reached EOF without finding enough lines
-//            return "";
-//        }
-//
-//        return line;
-    }
+#include <utility>
 
-    LogWindow::LogWindow(std::string name, bool childWindow, std::filesystem::path logFile)
-            : c_Name(std::move(name)), c_IsChildWindow(childWindow), c_LogFile(std::move(logFile)) {
+namespace KBUI::Windows {
+
+    LogWindow::LogWindow(const std::string &id, std::filesystem::path logFile)
+            : AWindow(id), c_LogFile(std::move(logFile)) {
         StartLogFileWatcher(1);
     }
 
@@ -53,7 +41,7 @@ namespace KBUI::Windows {
     }
 
     void LogWindow::Begin() {
-        ImGui::Begin(c_Name.c_str());
+        ImGui::Begin(AWindow::c_Id.c_str());
 
         //////////////////////////
         //////// Menu Bar ////////
@@ -76,7 +64,7 @@ namespace KBUI::Windows {
         ////////////////////////////
         {
             ImGui::BeginChild("LogChild", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar);
-            m_BeginCalled = true;
+
             for (const auto &line: m_LogLines) {
                 ImGui::TextUnformatted(line.c_str());
             }
@@ -86,22 +74,20 @@ namespace KBUI::Windows {
             bool reachedBottom = ImGui::GetScrollY() == ImGui::GetScrollMaxY();
 
             ImGui::EndChild();
-            if(ImGui::IsItemHovered()){
-               if(ImGui::GetIO().MouseWheel != 0){
-                   if(reachedBottom){
-                          m_AutoScroll = true;
-                   }else {
-                       m_AutoScroll = false;
-                   }
-               }
+            if (ImGui::IsItemHovered()) {
+                if (ImGui::GetIO().MouseWheel != 0) {
+                    if (reachedBottom) {
+                        m_AutoScroll = true;
+                    } else {
+                        m_AutoScroll = false;
+                    }
+                }
             }
         }
+
+        ImGui::End();
     }
 
-    void LogWindow::End() {
-        ImGui::End();
-        m_BeginCalled = false;
-    }
 
     void LogWindow::AddLog(const std::string &log) {
         m_LogLines.push_back(log);
@@ -140,4 +126,6 @@ namespace KBUI::Windows {
 
         file.close();
     }
+
+
 }

@@ -40,12 +40,13 @@ set(SOURCE_LIST
         src/private/source/MainWindow.cpp
         src/private/source/Fonts/FontManager.cpp
         src/private/source/WindowWithoutBorders.cpp
-        src/private/source/Windows/Window.cpp
+        src/private/source/Windows/AWindow.cpp
         src/private/source/Windows/Terminal/TerminalWindow.cpp
         src/private/source/Windows/Logs/LogWindow.cpp
         src/private/source/Menus/MenuItem.cpp
         src/private/source/Menus/MainMenuBar.cpp
         src/private/source/Theme/ThemeManager.cpp
+        src/private/source/Windows/WindowManager.cpp
 
 
 )
@@ -99,7 +100,7 @@ target_include_directories(
 
 set(EXE_NAME ${PROJECT_NAME}-EXE)
 add_executable(${EXE_NAME}
-    src/main.cpp
+        src/main.cpp
 )
 
 target_link_libraries(

@@ -20,6 +20,7 @@
 
 #include <imgui.h>
 #include <filesystem>
+#include <Windows/AWindow.h>
 
 namespace KBUI::Windows {
     struct Command {
@@ -73,9 +74,11 @@ namespace KBUI::Windows {
         Command command;
     };
 
-    class TerminalWindow {
+    class TerminalWindow : public AWindow {
     public:
-        TerminalWindow(const std::filesystem::path &currentFolder) : m_currentFolder(currentFolder) {
+        TerminalWindow(const std::string &id, const std::filesystem::path &currentFolder) :
+                AWindow(id),
+                m_currentFolder(currentFolder) {
 #ifdef __APPLE__
             pws = getpwuid(getuid());
 #endif
@@ -83,9 +86,7 @@ namespace KBUI::Windows {
 
         ~TerminalWindow() = default;
 
-        void Begin(const std::string &id);
-
-        static void End();
+        void Begin() override;
 
         static std::vector<std::string> SplitCommand(const std::string &command);
 
